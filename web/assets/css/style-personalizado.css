@@ -1,0 +1,14 @@
+.logo_per{
+    width: 100%;
+}
+
+.imagen_per{
+    position: relative;
+    left: 31%;
+    margin-top: 15%;
+}
+
+footer{
+    height: 50vh; 
+    overflow: hidden;
+}
