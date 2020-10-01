@@ -16,7 +16,7 @@ if(request.getParameter("EnvioID") != null){
                 <div class="container-fluid">
                 <div class="row">
                   <div class="col-md-10" id="contenedor_form">
-                        <form class="contact100-form validate-form" action="Objeto" method="POST">
+                      <form class="contact100-form validate-form" action="Objeto" method="POST" onsubmit="return Validar()">
                             <span class="contact100-form-title">
                                 Registrar nuevo objeto
                             </span>
@@ -31,29 +31,29 @@ if(request.getParameter("EnvioID") != null){
 
                             <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
                                 <span class="label-input100">Nombre del Objeto</span>
-                                <input class="input100" type="text" name="Nombre" placeholder="Ingrese el nombre del objeto" required="">
-                                <span class="focus-input100"></span>
+                                <input class="input100" type="text" id="name" name="Nombre" placeholder="Ingrese el nombre del objeto" required="">
+                                <span class="focus-input100" id="names"></span>
                             </div>
                             <!-- END INPUT entero -->
 
                             <!-- INPUT Doble -->
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                                 <span class="label-input100">Peso del Objeto</span>
-                                <input class="input100" type="number" name="Peso" placeholder="Ingrese la direccion donde se encuentra el paquete" required="">
-                                <span class="focus-input100"></span>
+                                <input class="input100" type="number" id="peso" name="Peso" placeholder="Ingrese la direccion donde se encuentra el paquete" required="">
+                                <span class="focus-input100" id="pesos"></span>
                             </div>
 
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                                 <span class="label-input100">Tamaño del Objeto</span>
-                                <input class="input100" type="number" name="Tam" placeholder="Ingrese el objeto del tamaño" required="">
-                                <span class="focus-input100"></span>
+                                <input class="input100" type="number" id="tam" name="Tam" placeholder="Ingrese el objeto del tamaño" required="">
+                                <span class="focus-input100" id="tams"></span>
                             </div>
                             <!--END INPUT Doble -->
 
                             <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
                                 <span class="label-input100">Descripcion del Objeto</span>
-                                <textarea class="input100" name="Desc" placeholder="Ingrese la fecha a la que inicia el envio"></textarea>
-                                <span class="focus-input100"></span>
+                                <textarea class="input100" id="Desc" name="Desc" placeholder="Ingrese la fecha a la que inicia el envio"></textarea>
+                                <span class="focus-input100" id="Descs"></span>
                             </div>
                             <!-- END INPUT entero -->
 
@@ -82,7 +82,8 @@ if(request.getParameter("EnvioID") != null){
 			<script src="vendor/OwlCarousel/owl.carousel.js"></script>
 			<script src="vendor/semantic/semantic.min.js"></script>
 			<script src="js/night-mode.js"></script>
-                        <script src="js/custom.js"></script>             
+                        <script src="js/custom.js"></script>    
+                        <script src="js/validacion/objeto.js"></script>
     </body>
 </html>
 

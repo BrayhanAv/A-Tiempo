@@ -9,7 +9,7 @@
                     <div class="row">
                             <div class="col-md-10" id="contenedor_form">
 
-                                <form class="contact100-form validate-form" action="Vehiculo" method="POST">
+                                <form class="contact100-form validate-form" action="Vehiculo" method="POST" >
                                     <span class="contact100-form-title">
                                         Registrar Nuevo Vehiculo
                                     </span>

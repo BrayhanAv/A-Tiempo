@@ -20,7 +20,7 @@
                         </div>
         
                         <%if(request.getParameter("ObjID") != null){%>
-                        <form class="contact100-form validate-form" action="Objeto" method="POST">
+                        <form class="contact100-form validate-form" action="Objeto" method="POST" onsubmit="return Validar()">
                             <span class="contact100-form-title">
                                 Modificar Objeto
                             </span>
@@ -34,29 +34,29 @@
 
                             <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
                                 <span class="label-input100">Nombre del Objeto</span>
-                                <input class="input100" type="text" name="Nombre" value="<%= Obj2.getNombre() %>" required="">
-                                <span class="focus-input100"></span>
+                                <input class="input100" type="text" id="name" name="Nombre" value="<%= Obj2.getNombre() %>" required="">
+                                <span class="focus-input100" id="names"></span>
                             </div>
                             <!-- END INPUT entero -->
 
                             <!-- INPUT Doble -->
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                                 <span class="label-input100">Peso del Objeto</span>
-                                <input class="input100" type="number" name="Peso" value="<%= Obj2.getPeso()%>" required="">
-                                <span class="focus-input100"></span>
+                                <input class="input100" type="number" id="peso" name="Peso" value="<%= Obj2.getPeso()%>" required="">
+                                <span class="focus-input100" id="pesos"></span>
                             </div>
 
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                                 <span class="label-input100">Tamaño del Objeto</span>
-                                <input class="input100" type="number" name="Tam" value="<%= Obj2.getTam()%>" required="">
-                                <span class="focus-input100"></span>
+                                <input class="input100" type="number" id="tam" name="Tam" value="<%= Obj2.getTam()%>" required="">
+                                <span class="focus-input100" id="tams"></span>
                             </div>
                             <!--END INPUT Doble -->
 
                             <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
                                 <span class="label-input100">Descripcion del Objeto</span>
-                                <textarea class="input100" name="Desc"><%= Obj2.getDescripcion()%></textarea>
-                                <span class="focus-input100"></span>
+                                <textarea class="input100" name="Desc" name="Desc"><%= Obj2.getDescripcion()%></textarea>
+                                <span class="focus-input100" name="Descs"></span>
                             </div>
                             <!-- END INPUT entero -->
 
@@ -85,5 +85,6 @@
     <script src="vendor/semantic/semantic.min.js"></script>
     <script src="js/night-mode.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/validacion/objeto.js"></script>
     </body>
 </html>

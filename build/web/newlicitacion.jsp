@@ -59,8 +59,8 @@ if(request.getParameter("SubID") != null){
                             <div class="country_item_left">
                               <span>Presupuesto </span>
                             </div>
-                            <div class="country_item_right">
-                              <span>$<%= EnVO.getPresupuesto()%></span>
+                            <div class="country_item_right">$
+                                <span id="presupuesto"><%= EnVO.getPresupuesto()%></span>
                             </div>
                           </div>
                         </li>
@@ -125,12 +125,12 @@ if(request.getParameter("SubID") != null){
                         </tbody>
                         <tfoot  style="background-color: #545654;">
                           <tr>
-                            <form method="POST" action="Puja" >
+                        <form method="POST" action="Puja" onsubmit="return Validar()">
                               
                               <td>Licitar</td>
                               <td colspan="2">
                                 
-                                <input type="text" name="Valor" placeholder="Ingrese el valor a licitar" id="textinput" class="form-control input-md" required="">
+                                  <input type="text" id="Valor" name="Valor" placeholder="Ingrese el valor a licitar" id="textinput" class="form-control input-md" required="">
                                   
                               </td>
                               
@@ -165,7 +165,8 @@ if(request.getParameter("SubID") != null){
 			<script src="vendor/OwlCarousel/owl.carousel.js"></script>
 			<script src="vendor/semantic/semantic.min.js"></script>
 			<script src="js/night-mode.js"></script>
-                        <script src="js/custom.js"></script>             
+                        <script src="js/custom.js"></script>       
+                        <script src="js/validacion/licitacion.js"></script>
     </body>
 </html>
 

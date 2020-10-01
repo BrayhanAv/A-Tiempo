@@ -14,7 +14,7 @@
                                                                     if(request.getParameter("AcarID") != null){
                                                                      String AcarreadorID = (String) request.getParameter("AcarID");
                                                                 %>
-                                                                  <form class="contact100-form validate-form" action="Comentario" method="POST">
+                                                                  <form class="contact100-form validate-form" action="Comentario" method="POST" onsubmit="return Validar()">
                                                                         <span class="contact100-form-title">
                                                                             Comentar Usuario
                                                                         </span>
@@ -32,15 +32,15 @@
                                                                         <!-- INPUT Doble -->
                                                                         <div class="wrap-input100 validate-input">
                                                                             <span class="label-input100">Puntaje(1 - 5)</span>
-                                                                            <input class="input100" type="number" name="Puntaje" placeholder="Ingrese el puntaje que le desea poner al acarreador" required="">
+                                                                            <input class="input100" type="number" id="punt" name="Puntaje" placeholder="Ingrese el puntaje que le desea poner al acarreador" required="">
 
-                                                                            <span class="focus-input100"></span>
+                                                                            <span class="focus-input100" id="punts"></span>
                                                                         </div>
 
                                                                         <div class="wrap-input100 validate-input">
                                                                             <span class="label-input100">Comentario:</span>
-                                                                            <textarea class="input100" name="Contenido" value="">Ingrese un comentario refiriéndose a sus servicios.</textarea>
-                                                                            <span class="focus-input100"></span>
+                                                                            <textarea class="input100" name="Contenido" id="cont" value="">Ingrese un comentario refiriéndose a sus servicios.</textarea>
+                                                                            <span class="focus-input100" id="conts"></span>
                                                                         </div>
                                                                         <!--END INPUT Doble -->
 
@@ -63,7 +63,7 @@
 			<script src="vendor/semantic/semantic.min.js"></script>
 			<script src="js/night-mode.js"></script>
                         <script src="js/custom.js"></script>      
-        
+                        <script src="js/validacion/comentario.js"></script>
         <%        
             }else{
                 request.getRequestDispatcher("listContratosCliente.jsp").forward(request, response);         

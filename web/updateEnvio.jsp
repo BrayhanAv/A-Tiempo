@@ -14,7 +14,7 @@
               <div class="row">
                   <div class="col-md-10" id="contenedor_form">
 
-                  <form class="contact100-form validate-form" action="Envio" method="POST">
+                  <form class="contact100-form validate-form" action="Envio" method="POST" onsubmit="return Validar()">
                       <span class="contact100-form-title">
                           Actualizar datos del Envio
                       </span>
@@ -34,36 +34,36 @@
                       
                       <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
                           <span class="label-input100">Presupuesto del envio</span>
-                          <input class="input100" type="number" name="Presupuesto" value="<%= EnVO2.getPresupuesto() %>" required="">
-                          <span class="focus-input100"></span>
+                          <input class="input100" type="number" id="pr" name="Presupuesto" value="<%= EnVO2.getPresupuesto() %>" required="">
+                          <span class="focus-input100" id="prs"></span>
                       </div>
                       <!-- END INPUT entero -->
 
                       <!-- INPUT Doble -->
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                           <span class="label-input100">Direccion Inicial</span>
-                          <input class="input100" type="text" name="PuntoIN" value="<%= EnVO2.getPuntoIn()%>" required="">
-                          <span class="focus-input100"></span>
+                          <input class="input100" type="text"  id="direc" name="PuntoIN" value="<%= EnVO2.getPuntoIn()%>" required="">
+                          <span class="focus-input100"  id="direcs"></span>
                       </div>
                   
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                           <span class="label-input100">Direccion Final</span>
-                          <input class="input100" type="text" name="PuntoFN" value="<%= EnVO2.getPuntoFn()%>" required="">
-                          <span class="focus-input100"></span>
+                          <input class="input100" type="text" id="direcF" name="PuntoFN" value="<%= EnVO2.getPuntoFn()%>" required="">
+                          <span class="focus-input100" id="direcFs"></span>
                       </div>
                       <!--END INPUT Doble -->
 
                       <!-- INPUT Doble -->
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                           <span class="label-input100">Fecha Inicial</span>
-                          <input class="input100" type="date" name="FechaIN" value="<%= EnVO2.getFechaIn()%>" required="">
-                          <span class="focus-input100"></span>
+                          <input class="input100" type="date" id="fecha" name="FechaIN" value="<%= EnVO2.getFechaIn()%>" required="">
+                          <span class="focus-input100" id="fechas"></span>
                       </div>
                   
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                           <span class="label-input100">Fecha Final</span>
-                          <input class="input100" type="date" name="FechaFN" value="<%= EnVO2.getFechaFn()%>" required="">
-                          <span class="focus-input100"></span>
+                          <input class="input100" type="date" id="fechaf" name="FechaFN" value="<%= EnVO2.getFechaFn()%>" required="">
+                          <span class="focus-input100" id="fechafs"></span>
                       </div>
                       <!--END INPUT Doble -->
                       
@@ -94,5 +94,6 @@
     <script src="vendor/semantic/semantic.min.js"></script>
     <script src="js/night-mode.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/validacion/envio.js"></script>
     </body>
 </html>

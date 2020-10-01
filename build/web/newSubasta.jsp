@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Date"%>
 <%@include file="ses.jsp" %>
 <link rel="stylesheet" type="text/css" href="css/main_forms.css">
@@ -13,7 +14,7 @@
               <div class="row">
                   <div class="col-md-10" id="contenedor_form">
 
-                  <form class="contact100-form validate-form" action="Subasta" method="POST">
+                  <form class="contact100-form validate-form" action="Subasta" method="POST" onsubmit="return Validar()">
                       <span class="contact100-form-title">
                           Subastar Envio
                       </span>
@@ -30,15 +31,19 @@
                       <!-- INPUT Doble -->
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                           <span class="label-input100">Fecha de Inicio</span>
-                          <input class="input100" type="date" name="FechaIN" value="" required="">
+                          <%Date ahora = new Date();
+                            SimpleDateFormat formateador = new SimpleDateFormat("YYYY-MM-dd");
+                            String partsAC = formateador.format(ahora);
+                           %>
+                          <input class="input100" id="fecha" readonly="readonly" type="text" value="<%= partsAC %>" name="FechaIN" required="" >
                           
-                          <span class="focus-input100"></span>
+                          <span class="focus-input100" id="fechas"></span>
                       </div>
                   
                       <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
                           <span class="label-input100">Fecha de Finalizacion</span>
-                          <input class="input100" type="date" name="FechaFN" value="" required="">
-                          <span class="focus-input100"></span>
+                          <input class="input100" id="fechaf" type="date" name="FechaFN" value="" required="">
+                          <span class="focus-input100" id="fechafs"></span>
                       </div>
                       <!--END INPUT Doble -->
 
@@ -61,6 +66,7 @@
 			<script src="vendor/semantic/semantic.min.js"></script>
 			<script src="js/night-mode.js"></script>
                         <script src="js/custom.js"></script>    
+                        <script src="js/validacion/subasta.js"></script>
     </body>
     <%     
     }else{

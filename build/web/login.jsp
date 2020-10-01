@@ -31,21 +31,30 @@
         <div class="form">
           <fieldset class="block">
             <h2 class="form-h">Registrarse</h2>
-            <form method="POST" action="Usuario">
-                <input class="input-text" name="Login" placeholder="Login" type="text"/>
-              <input class="input-text" name="password" placeholder="Password" type="password"/>
-              <input class="input-text" name="Nombre" placeholder="Nombre" type="text"/>
-              <input class="input-text" name="Apellido" placeholder="Apellido" type="text"/>
-              <input class="input-text" name="Telefono" placeholder="Telefono" type="text"/>
-              <input class="input-text" name="Corre" placeholder="Correo" type="email"/>
-              <input class="input-text" name="Documento" placeholder="Documento" type="text"/>
-              <select name="Tabla" class="input-text">
-                <option value="cliente" > Cliente </option>
-                <option value="acarreador" > Acarreador </option>
-              </select>
-              <input type="hidden" name="opcion" value="1">
-              <input class="input-submit" type="submit" value="Registrar"/>
-            </form>
+            <form method="POST" action="Usuario" onsubmit="return validacion()">
+                <input class="input-text tool" id="Nombre" name="Nombre" placeholder="Nombre" type="text"/>
+                
+                <input class="input-text tool" id="Apellido" name="Apellido" placeholder="Apellido" type="text"/>
+
+                <input class="input-text tool" id="password" name="password" placeholder="contraseña entre 8 y 16 digitos" type="password"/>
+
+                <input class="input-text tool" id="Login" name="Login" placeholder="Login" type="text"/>
+
+                <input class="input-text tool" id="Telefono" name="Telefono" placeholder="Telefono" type="text"/>
+
+                <input class="input-text tool" id="Corre" name="Corre" placeholder="Correo" type="email"/>
+
+                <input class="input-text tool" id="Documento" name="Documento" placeholder="Documento" type="text"/>
+
+                <select id="Tabla"  name="Tabla" class="input-text tool">
+                  <option value="cliente" > Cliente </option>
+                  <option value="acarreador" > Acarreador </option>
+                </select>
+
+                <input type="hidden" name="opcion" value="1">
+
+                <input class="input-submit" type="submit" value="Registrar"/>
+              </form>
           </fieldset>
         </div>
       </div>
@@ -74,7 +83,9 @@
   </div>
 </div>
   <!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script><script  src="assets/js/script-ing.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+  <script  src="assets/js/script-ing.js"></script>
+  <script src="js/validacion/usuario.js"></script>
 
 </body>
 </html>
