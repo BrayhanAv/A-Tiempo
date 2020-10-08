@@ -101,7 +101,13 @@
 											</div>
 											<div class="vdtodt">
 												<span class="vdt14">Peso total: <%= veh.getPesoTotal() %> </span>
-												<span class="vdt14"> <a href="listObjetos.jsp?EnvioID=<%= veh.getEnvioID()%>"> ver objetos</a></span>
+                                                                                                <% if(!(svoDAO.searchid(veh.getEnvioID())).equals("")) {%>
+                                                                                                            <span class="vdt14">Objetos no visibles</span>
+                                                                                                    <% }else{%>
+                                                                                                    
+                                                                                                           <span class="vdt14"> <a href="listObjetos.jsp?EnvioID=<%= veh.getEnvioID()%>"> ver objetos</a></span>
+                                                                                                    <% } %>
+												
 											</div>
 											<p href="" class="cr1fot">
 												El usuario (<%= veh.getClienteID() %>) esta dispuesto a pagar $<%= veh.getPresupuesto() %>

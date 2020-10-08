@@ -64,8 +64,7 @@
                           </div>
                           <span><%= Rol %></span>
                         </div>							
-                      </div>
-                      <a href="listUsuario.jsp" class="dp_link_12">Ver perfil</a>						
+                      </div>						
                     </div>
                     <div class="night_mode_switch__btn">
                     </div>

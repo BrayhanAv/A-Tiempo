@@ -38,13 +38,13 @@ if(request.getParameter("EnvioID") != null){
 
                             <!-- INPUT Doble -->
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
-                                <span class="label-input100">Peso del Objeto</span>
+                                <span class="label-input100">Peso del Objeto kg</span>
                                 <input class="input100" type="number" id="peso" name="Peso" placeholder="Ingrese la direccion donde se encuentra el paquete" required="">
                                 <span class="focus-input100" id="pesos"></span>
                             </div>
 
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
-                                <span class="label-input100">Tamaño del Objeto</span>
+                                <span class="label-input100">Tamaño del Objeto m</span>
                                 <input class="input100" type="number" id="tam" name="Tam" placeholder="Ingrese el objeto del tamaño" required="">
                                 <span class="focus-input100" id="tams"></span>
                             </div>

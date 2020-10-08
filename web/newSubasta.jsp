@@ -51,6 +51,14 @@
 
                       <input type="hidden" name="EnvioID" value="<%= request.getParameter("EnID") %>">
                   
+                      <%
+                                EnvioVO ENvo = new EnvioVO();
+                                EnvioDAO vhDa = new EnvioDAO(ENvo);
+                                EnvioVO EnVO2 = vhDa.search(request.getParameter("EnID"));
+                       %>
+                      
+                        <input type="hidden" id="FechaFinalValidar" value="<%= EnVO2.getFechaIn() %>">
+                      
                       <input type="submit" value="Subastar"  class="upload_btn" style="width: 25%;">
                   </form>
 
@@ -65,7 +73,7 @@
 			<script src="vendor/OwlCarousel/owl.carousel.js"></script>
 			<script src="vendor/semantic/semantic.min.js"></script>
 			<script src="js/night-mode.js"></script>
-                        <script src="js/custom.js"></script>    
+                        <script src="js/custom.js"></script>
                         <script src="js/validacion/subasta.js"></script>
     </body>
     <%     

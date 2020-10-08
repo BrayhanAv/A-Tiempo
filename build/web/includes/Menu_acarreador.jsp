@@ -86,7 +86,7 @@
                             <span><%= Rol %> (<%= id %>) </span>
                             </div>							
                         </div>
-                        <a href="listUsuario.html" class="dp_link_12">Ver perfil</a>						
+                        <a href="viewPerfil.jsp?UsuID=<%= id %>" class="dp_link_12">Ver perfil</a>						
                         </div>
                         <div class="night_mode_switch__btn">
                         </div>

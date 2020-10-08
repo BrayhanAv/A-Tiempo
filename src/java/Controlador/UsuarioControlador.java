@@ -56,7 +56,7 @@ public class UsuarioControlador extends HttpServlet {
                 if(UsDAO.Registrar()){
                     request.setAttribute("MensageExito", "El Usuario se registro correctamente");
                 }else{
-                    request.setAttribute("MensageError", "El Usuario no se registro correctamente");
+                    request.setAttribute("MensageError", "El login ya esta registrado");
                 }
                 
                 request.getRequestDispatcher("login.jsp").forward(request, response);

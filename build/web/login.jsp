@@ -15,6 +15,13 @@
     <div class="side-1">
       <div class="header">
         <p class="h-sec">Porfavor digita los datos requeridos</p>
+        <div style="color: black; margin-bottom: 20px;">
+             <%if(request.getAttribute("MensageError") != null){%>
+             ${MensageError}
+             <%}else{%>
+             ${MensageExito}
+             <%}%>
+        </div>
         <button class="toggle-log">REGÍSTRARSE</button>
       </div>
     </div>
@@ -63,16 +70,10 @@
           <fieldset>
               <h2 class="h-main"><a href="index.html"><img class="img-logo" src="images/logo_carrito.png" alt=""></a></h2>
             <h2 class="form-h">Iniciar Sesión</h2>
-            <div style="color: black">
-             <%if(request.getAttribute("MensageError") != null){%>
-             ${MensageError}
-             <%}else{%>
-             ${MensageExito}
-             <%}%>
-            </div>
+            
             <form method="POST" action="Usuario">
               <input class="input-text" name="Login" placeholder="Nombre de usuario" type="text"/>
-              <input class="input-text" name="password" placeholder="Contraseña" type="password"/><a class="forgot" href="#">Olvidaste tu contraseña?</a>
+              <input class="input-text" name="password" placeholder="Contraseña" type="password"/>
               <input type="hidden" name="opcion" value="2">
               <input class="input-submit" type="submit" value="Ingresar"/>
             </form>

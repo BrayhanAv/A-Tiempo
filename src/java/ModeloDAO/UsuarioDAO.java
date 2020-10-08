@@ -59,46 +59,49 @@ public class UsuarioDAO extends Conexion implements MetodosCrud{
 
     @Override
     public boolean Registrar() {
-        try {
-         
-            if(Tabla.equals("cliente")){
-                sql = "INSERT INTO cliente (`login`, `Password`, `nombre`, `apellido`, `telefono`, `correo`, `documento`, `descontinuado`) VALUES (?,?,?,?,?,?,?,0)";
-                puente = conexion.prepareStatement(sql);
-                puente.setString(1,Login);
-                puente.setString(2,Password);
-                puente.setString(3,Nombre);
-                puente.setString(4,Apellido);
-                puente.setString(5,Telefono);
-                puente.setString(6,Correo);
-                puente.setString(7,Documento);
-                puente.executeUpdate();
-                operacion = true;
-            }else if(Tabla.equals("acarreador")){
-                sql = "INSERT INTO `acarreador` (`login`, `Password`, `nombre`, `apellido`, `telefono`, `correo`, `documento`, `descontinuado`) VALUES (?,?,?,?,?,?,?,0)";
-                puente = conexion.prepareStatement(sql);
-                puente.setString(1,Login);
-                puente.setString(2,Password);
-                puente.setString(3,Nombre);
-                puente.setString(4,Apellido);
-                puente.setString(5,Telefono);
-                puente.setString(6,Correo);
-                puente.setString(7,Documento);
-                puente.executeUpdate();
-                operacion = true;  
-            }
-            
-            
-        } catch (SQLException e) {
-            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE,null,e);
-            operacion = false;
-        }finally{
+        
+        if(Validar(Login)){
+        
             try {
-                this.cerrarConeccion();
+
+                if(Tabla.equals("cliente")){
+                    sql = "INSERT INTO cliente (`login`, `Password`, `nombre`, `apellido`, `telefono`, `correo`, `documento`, `descontinuado`) VALUES (?,?,?,?,?,?,?,0)";
+                    puente = conexion.prepareStatement(sql);
+                    puente.setString(1,Login);
+                    puente.setString(2,Password);
+                    puente.setString(3,Nombre);
+                    puente.setString(4,Apellido);
+                    puente.setString(5,Telefono);
+                    puente.setString(6,Correo);
+                    puente.setString(7,Documento);
+                    puente.executeUpdate();
+                    operacion = true;
+                }else if(Tabla.equals("acarreador")){
+                    sql = "INSERT INTO `acarreador` (`login`, `Password`, `nombre`, `apellido`, `telefono`, `correo`, `documento`, `descontinuado`) VALUES (?,?,?,?,?,?,?,0)";
+                    puente = conexion.prepareStatement(sql);
+                    puente.setString(1,Login);
+                    puente.setString(2,Password);
+                    puente.setString(3,Nombre);
+                    puente.setString(4,Apellido);
+                    puente.setString(5,Telefono);
+                    puente.setString(6,Correo);
+                    puente.setString(7,Documento);
+                    puente.executeUpdate();
+                    operacion = true;  
+                }
+
+
             } catch (SQLException e) {
                 Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE,null,e);
+                operacion = false;
+            }finally{
+                try {
+                    this.cerrarConeccion();
+                } catch (SQLException e) {
+                    Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE,null,e);
+                }
             }
         }
-        
        return operacion;
     }
 
@@ -112,6 +115,36 @@ public class UsuarioDAO extends Conexion implements MetodosCrud{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public boolean Validar(String Loginb){
+        
+         try {
+                sql = "select * from cliente where login = ? ";
+                puente = conexion.prepareStatement(sql);
+                puente.setString(1,Loginb);
+                rs = puente.executeQuery();
+                if(rs.next()){
+                    operacion = false;
+                }else{
+                    sql = "select * from acarreador where login = ? ";
+                    puente = conexion.prepareStatement(sql);
+                    puente.setString(1,Loginb);
+                    rs = puente.executeQuery();
+                    if(rs.next()){
+                        operacion = false;
+                    }else{
+                        operacion = true;
+                    }
+                }
+                
+        } catch (SQLException e) {
+            Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE,null,e);
+            operacion = false;
+        }
+       
+       return operacion; 
+        
+    }
+    
     public UsuarioVO login(String login,String password){
         
        UsuarioVO usuvo = null;

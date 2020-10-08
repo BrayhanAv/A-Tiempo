@@ -30,7 +30,7 @@
                                     %>
 
                             <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
-                                <span class="label-input100">Placa del vehiculo No modificale</span>
+                                <span class="label-input100">Placa del vehiculo No modificable</span>
                                 <input class="input100" type="text" name="Placa" value="<%=VH2.getPlaca()%>" readonly="readonly" required="">
                                 <span class="focus-input100"></span>
                             </div>
@@ -38,20 +38,20 @@
 
                             <!-- INPUT Doble -->
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
-                                <span class="label-input100">Modelo No modificale</span>
+                                <span class="label-input100">Modelo No modificable</span>
                                 <input class="input100" type="text" name="Modelo" value="<%=VH2.getModelo()%>" readonly="readonly" required="">
                                 <span class="focus-input100"></span>
                             </div>
 
                             <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Name is required">
-                                <span class="label-input100">Marca No modificale</span>
+                                <span class="label-input100">Marca No modificable</span>
                                 <input class="input100" type="text" name="Marca" value="<%=VH2.getMarca()%>" readonly="readonly" required="">
                                 <span class="focus-input100"></span>
                             </div>
                             <!--END INPUT Doble -->
 
                             <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
-                                <span class="label-input100">Peso del vehiculo No modificale</span>
+                                <span class="label-input100">Peso del vehiculo No modificable</span>
                                 <input class="input100" type="text" name="Peso" value="<%=VH2.getPeso()%>" readonly="readonly" required="">
                                 <span class="focus-input100"></span>
                             </div>

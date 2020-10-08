@@ -34,7 +34,7 @@ function Validar(){
     
     //validar descripcion
     var Valor = document.getElementById("Desc").value;
-    if(Valor.length < 10  || /\s+$/.test(Valor)){
+    if(Valor.length > 20){
         document.getElementById("Desc"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
         
         return false;
