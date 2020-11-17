@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-09-2020 a las 19:51:57
+-- Tiempo de generación: 05-11-2020 a las 14:08:50
 -- Versión del servidor: 10.4.13-MariaDB
 -- Versión de PHP: 7.4.8
 
@@ -25,13 +25,83 @@ DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `desativarenvio` (IN `id_envio` INT)  UPDATE envio as e set e.Estado = 1 WHERE e.EnvioID = id_envio$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ComentarioActualizarPromedio` (IN `id` INT(11), IN `prom` INT(11))  NO SQL
+UPDATE `acarreador` SET puntaje_promedio = prom WHERE AcarreadorID = id$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListarComentario` (IN `id` INT)  SELECT * from comentario WHERE acarreadorID = id$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ComentarioDeterminarPromedio` (IN `id` INT(11))  NO SQL
+SELECT AVG(Puntaje) FROM `comentario` WHERE AcarreadorID = id$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListarObjeto` (IN `id` INT)  SELECT * from objeto WHERE EnvioID = id$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ComentarioList` (IN `id` INT(11))  NO SQL
+select * from comentario where AcarreadorID = id$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListarPujas` (IN `id` INT)  SELECT * from puja WHERE subastaID = id$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ComentarioRegistrar` (IN `ClienteID` INT(11), IN `AcarreadorID` INT(11), IN `Contenido` VARCHAR(100), IN `Puntaje` INT(11))  NO SQL
+INSERT INTO `comentario`(`ClienteID`, `AcarreadorID`, `Contenido`, `Puntaje`) VALUES  (ClienteID,AcarreadorID,Contenido,Puntaje)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioAceptarContrato` (IN `CostoFin` VARCHAR(11), IN `AcarID` INT(11), IN `AcepClien` VARCHAR(11), IN `AcepAcarr` VARCHAR(11), IN `FechaAcep` VARCHAR(11), IN `Enid` INT(11))  NO SQL
+UPDATE `envio` SET `Costo_Final`= CostoFin,`AcarreadorID`= AcarID,`AceptacionCliente`= AcepClien,`AceptacionAcarreador`= AcepAcarr,`Fechaaceptacion`= FechaAcep,`activado`= 1,Estado = 'Espera' WHERE EnvioID = Enid$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioCambiarEstado` (IN `Es` VARCHAR(11), IN `Enid` INT(11))  NO SQL
+UPDATE `envio` SET Estado = Es WHERE EnvioID = Enid$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioDeterminarID` (IN `CLid` INT(11), IN `Presupuesto` INT(11), IN `PnIn` VARCHAR(50), IN `PnFn` VARCHAR(50), IN `FecIn` VARCHAR(50), IN `FecFn` VARCHAR(50))  NO SQL
+select EnvioID from envio where ClienteID = CLid and Presupuesto = Presupuesto and PuntoInicio = PnIn and PuntoFinal = PnFn and FechaInicio = FecIn and FechaLimite = FecFn$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioList` (IN `usID` INT(11))  NO SQL
+SELECT * FROM `envio` where ClienteID = usID and activado = 0 ORDER BY `EnvioID` DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioListContrato` (IN `usID` INT(11))  NO SQL
+SELECT * FROM `envio` where ClienteID = usID and activado = 1 ORDER BY `EnvioID` DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioListContratoAcarreador` (IN `usID` INT(11))  NO SQL
+SELECT * FROM `envio` where AcarreadorID = usID and activado = 1 ORDER BY `EnvioID` DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioModificar` (IN `Presupuesto` INT(11), IN `PnIn` VARCHAR(50), IN `PnFn` VARCHAR(50), IN `FecIn` VARCHAR(50), IN `FecFn` VARCHAR(50), IN `EnvioID` INT(11))  NO SQL
+UPDATE `Envio` SET `Presupuesto`= Presupuesto,`PuntoInicio`=PnIn,`PuntoFinal`=PnFn,`FechaInicio`=FecIn,`FechaLimite`=FecFn WHERE `EnvioID`=EnvioID$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioRegistrar` (IN `CLid` INT(11), IN `Presupuesto` INT(11), IN `PnIn` VARCHAR(50), IN `PnFn` VARCHAR(50), IN `FecIn` VARCHAR(50), IN `FecFn` VARCHAR(50))  NO SQL
+INSERT INTO `envio`(ClienteID ,`presupuesto`, `PuntoInicio`, `PuntoFinal`, `FechaInicio`, `FechaLimite`, activado) VALUES (CLid,Presupuesto,PnIn,PnFn,FecIn,FecFn,0)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EnvioSearch` (IN `id` INT(11))  NO SQL
+select * from Envio where EnvioID = id$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `NotificacionList` (IN `usid` INT(11))  NO SQL
+SELECT * FROM `notificacion` WHERE usuarioID = usid$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `NotificacionRegistrar` (IN `usid` INT(11), IN `rem` VARCHAR(11), IN `acc` VARCHAR(11), IN `vin` VARCHAR(11))  NO SQL
+INSERT INTO `notificacion`(`usuarioID`, `remitente`, `accion`, `vinculo`)  VALUES (usid,rem,acc,vin)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObjetoList` (IN `envID` INT(11))  NO SQL
+select * from objeto where EnvioID = envID$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObjetoModificar` (IN `Nombre` VARCHAR(60), IN `Peso` INT(11), IN `Tamaño` INT(11), IN `Descripcion` VARCHAR(110), IN `ObjID` INT(11))  NO SQL
+UPDATE `objeto` SET `Nombre`= Nombre,`Peso`= Peso,`Tam`= Tamaño,`descripcion`= Descripcion WHERE `ObjetoID`= ObjID$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObjetoRegistrar` (IN `Envd` INT(11), IN `Nombre` VARCHAR(60), IN `Peso` INT(11), IN `Tamaño` INT(11), IN `Descripcion` VARCHAR(110))  NO SQL
+INSERT INTO `objeto`(`EnvioID`, `Nombre`, `Peso`, `Tam`, `Descripcion`) VALUES  (Envd,Nombre,Peso,Tamaño,Descripcion)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ObjetoSearch` (IN `Objid` INT(11))  NO SQL
+SELECT * FROM `objeto` WHERE ObjetoID = Objid$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PujaRegistrar` (IN `PID` INT(11), IN `SID` INT(11), IN `AID` INT(11), IN `VL` INT(8), IN `FCH` VARCHAR(20))  NO SQL
+INSERT INTO `puja`(`PujaID`, `SubastaID`, `AcarreadorID`, `Valor`, `FechaRealizacion`) VALUES (PID,SID,AID,VL,FCH)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SubastaList` (IN `cliente` INT(11))  NO SQL
+SELECT * FROM subastasporcliente WHERE clienteID = cliente and finalizada = 0 ORDER BY `subastaid` DESC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SubastaRegistrar` (IN `enID` INT(11), IN `FechIn` VARCHAR(11), IN `FechaFn` VARCHAR(11))  NO SQL
+INSERT INTO `subasta`(`EnvioID`, Fehainicio, FehaFin,Finalizada) VALUES  (enID,FechIn,FechaFn,0)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UsuarioModificarAcarreador` (IN `NM` VARCHAR(100), IN `AP` VARCHAR(100), IN `TL` VARCHAR(100), IN `CR` VARCHAR(100), IN `DC` INT(20), IN `AID` INT(11))  NO SQL
+UPDATE `acarreador` SET `nombre`=NM,`apellido`= AP,`telefono`= TL,`correo`= CR,`documento`= DC WHERE `AcarreadorID`= AID$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UsuarioModificarCliente` (IN `NM` VARCHAR(100), IN `AP` VARCHAR(100), IN `TL` VARCHAR(100), IN `CR` VARCHAR(100), IN `DC` INT(20), IN `AID` INT(11))  NO SQL
+UPDATE `cliente` SET `nombre`=NM,`apellido`= AP,`telefono`= TL,`correo`= CR,`documento`= DC WHERE `clienteID`= AID$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VehiculoModificar` (IN `MO` VARCHAR(60), IN `MA` VARCHAR(60), IN `PE` INT(40), IN `EX` VARCHAR(70), IN `FT` VARCHAR(60), IN `PL` VARCHAR(11))  NO SQL
+UPDATE `vehiculo` SET `Modelo`=MO,`Marca`=MA,`peso`=PE,`extra_especificaciones`=EX,`Foto`=FT WHERE `placa`=PL$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VehiculoRegistrar` (IN `PL` VARCHAR(11), IN `ACID` INT(11), IN `MO` VARCHAR(60), IN `MA` VARCHAR(60), IN `PE` INT(40), IN `EX` VARCHAR(70), IN `FT` VARCHAR(60))  NO SQL
+INSERT INTO `vehiculo`(`placa`, `AcarreadorID`, `Modelo`, `Marca`, `peso`, `extra_especificaciones`,`Foto`) VALUES  (PL,ACID,MO,MA,PE,EX,FT)$$
 
 DELIMITER ;
 
@@ -59,7 +129,29 @@ CREATE TABLE `acarreador` (
 --
 
 INSERT INTO `acarreador` (`AcarreadorID`, `login`, `Password`, `nombre`, `apellido`, `telefono`, `correo`, `documento`, `puntaje_promedio`, `descontinuado`) VALUES
-(11, 'Acarreador1', '12345', 'Pepe', 'Lopez', '1234565', 'ejemplo@gmail.com', 11234568, 4, 0);
+(11, 'Acarreador1', 'a452c87dd8d13d6d352102b01021d7b6', 'Carlos', 'Pequeño lopez', '1234565', 'bfavila5@misena.edu.co', 11234568, 4, 0),
+(12, 'Acarreador2', '827ccb0eea8a706c4c34a16891f84e7b', 'Pepe', 'Lopez', '1234565', 'ejemplo2@gmail.com', 11234568, 4, 0),
+(13, 'Acarreador3', '08e0750210f66396eb83957973705aad', 'Antonio ', 'Garcia', '3114582694', 'AntonioG@gmail.com', 1322054825, 4, 0),
+(15, 'Acarreador4', '08e0750210f66396eb83957973705aad', 'Jose', 'Martines', '3112832426', 'Martines@gmail.com', 1000452821, 4, 0),
+(16, 'Acar_JOSE', '08e0750210f66396eb83957973705aad', 'JOSE', 'MARTINEZ', '3112832426', 'JOSE16@gmail.com', 1000452821, 4, 0),
+(17, 'Acar_FRANCISCO', '08e0750210f66396eb83957973705aad', 'FRANCISCO', 'LOPEZ', '3111082158', 'FRANCISCO17@gmail.com', 2147483647, 4, 0),
+(19, 'Acar_MANUEL', '08e0750210f66396eb83957973705aad', 'MANUEL', 'GONZALEZ', '3107581622', 'MANUEL19@gmail.com', 2147483647, 4, 0),
+(20, 'Acar_PEDRO', '08e0750210f66396eb83957973705aad', 'PEDRO', 'GOMEZ', '3105831354', 'PEDRO20@gmail.com', 2147483647, 4, 0),
+(21, 'Acar_JESUS', '08e0750210f66396eb83957973705aad', 'JESUS', 'FERNANDEZ', '3104081086', 'JESUS21@gmail.com', 2147483647, 4, 0),
+(22, 'Acar_ANGEL', '08e0750210f66396eb83957973705aad', 'ANGEL', 'MORENO', '3102330818', 'ANGEL22@gmail.com', 209291593, 4, 0),
+(23, 'Acar_MIGUEL', '08e0750210f66396eb83957973705aad', 'MIGUEL', 'JIMENEZ', '3100580550', 'MIGUEL23@gmail.com', 1250761207, 4, 0),
+(24, 'Acar_JAVIER', '08e0750210f66396eb83957973705aad', 'JAVIER', 'PEREZ', '3098830282', 'JAVIER24@gmail.com', 1572363211, 4, 0),
+(25, 'Acar_JOSE4', '08e0750210f66396eb83957973705aad', 'JOSE ', 'RODRIGUEZ', '3097080014', 'JOSE 25@gmail.com', 1893965215, 4, 0),
+(26, 'Acar_DAVID', '08e0750210f66396eb83957973705aad', 'DAVID', 'NAVARRO', '3095329746', 'DAVID26@gmail.com', 2147483647, 4, 0),
+(27, 'Acar_CARLOS', '08e0750210f66396eb83957973705aad', 'CARLOS', 'RUIZ', '3093579478', 'CARLOS27@gmail.com', 2147483647, 4, 0),
+(28, 'Acar_JOSE LUIS', '08e0750210f66396eb83957973705aad', 'JOSE LUIS', 'DIAZ', '3091829210', 'JOSE LUIS28@gmail.com', 2147483647, 4, 0),
+(29, 'Acar_Antonio ', '08e0750210f66396eb83957973705aad', 'Antonio ', 'SERRANO', '3090078942', 'Antonio 29@gmail.com', 2147483647, 4, 0),
+(30, 'Acar_Carlos2', 'b72ba49c1772ad65ad94bd7857a8efb7', 'Carlos', 'Peque?o lopez', '3113505539', 'bfavila56@misena.edu.co', 11234568, 4, 0),
+(31, 'Acar_Pepe', '827ccb0eea8a706c4c34a16891f84e7b', 'Pepe', 'Lopez', '3114823242', 'Pepe2@gmail.com', 11234568, 4, 0),
+(32, 'Acar_Antonio3', '08e0750210f66396eb83957973705aad', 'Antonio ', 'Garcia', '3114582694', 'Antonio3@gmail.com', 1322054825, 4, 0),
+(33, 'Acar_Jose2', 'a452c87dd8d13d6d352102b01021d7b6', 'Jose', 'Martines', '3112832426', 'Jose4@gmail.com', 1000452821, 5, 0),
+(340, 'Acar_Antonio2', 'a452c87dd8d13d6d352102b01021d7b6', 'Antonio ', 'GARCIA', '3114582694', 'Antonio 34@gmail.com', 1322054825, 4, 0),
+(342, 'Juan', 'a452c87dd8d13d6d352102b01021d7b6', 'Juan', 'Sanchez', '3109331890', 'JUAN18@gmail.com', 2147483647, 5, 0);
 
 -- --------------------------------------------------------
 
@@ -84,9 +176,27 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`clienteID`, `login`, `Password`, `nombre`, `apellido`, `telefono`, `correo`, `documento`, `descontinuado`) VALUES
-(11, 'Clienteprueba', '123456', 'pr', 'pr', '123', 'prueba@prueba', 123, 0),
-(12, '1', '1', '1', '1', '1', '1@1', 1, 0),
-(13, 'Jorge', '12345', 'Jorge', 'Portella', '1234567', 'Jorge@gmail.com', 1234567890, 0);
+(11, 'Clienteprueba2', 'e10adc3949ba59abbe56e057f20f883e', 'Laura', 'Perez', '123', 'prueba@prueba', 123, 0),
+(12, '1', 'c4ca4238a0b923820dcc509a6f75849b', '1', '1', '1', '1@gmail.com', 1, 0),
+(13, 'Jorge', 'e10adc3949ba59abbe56e057f20f883e', 'Jorge', 'Portella', '1234567', 'Jorge2@gmail.com', 1234567890, 0),
+(14, 'Clienteprueba', 'a452c87dd8d13d6d352102b01021d7b6', 'Brayhan', 'Avila', '1234567890', 'Jorge@gmail.com', 1003640535, 0),
+(15, 'SofiaAleja', 'a452c87dd8d13d6d352102b01021d7b6', 'Alejandra', 'Armijjo', '3113505539', 'Aleja@gmail.com', 1004566783, 0),
+(16, 'ClienteLaura', 'e10adc3949ba59abbe56e057f20f883e', 'Laura', 'Perez', '3108335240', 'Laura16@gmail.com', 1552387223, 0),
+(17, 'ClienteDariana', 'c4ca4238a0b923820dcc509a6f75849b', 'Dariana', 'Molina', '3854493112', 'Dariana17@gmail.com', 1853664608, 0),
+(18, 'ClienteGerman', '827ccb0eea8a706c4c34a16891f84e7b', 'German', 'Quevedo', '4600650985', 'German18@gmail.com', 2147483647, 0),
+(19, 'ClienteCristian', 'a452c87dd8d13d6d352102b01021d7b6', 'Cristian', 'Soto', '5346808857', 'Cristian19@gmail.com', 2147483647, 0),
+(20, 'ClienteBrandon', 'a452c87dd8d13d6d352102b01021d7b6', 'Brandon', 'Castillo', '6092966729', 'Brandon20@gmail.com', 2147483647, 0),
+(21, 'ClienteJose', 'e10adc3949ba59abbe56e057f20f883e', 'Jose', 'Rozo', '6839124601', 'Jose21@gmail.com', 2147483647, 0),
+(22, 'ClienteMarili', 'c4ca4238a0b923820dcc509a6f75849b', 'Marili', 'rocha', '7585282473', 'Marili22@gmail.com', 2147483647, 0),
+(23, 'ClienteMaria', '827ccb0eea8a706c4c34a16891f84e7b', 'Maria', 'Avila', '8331440345', 'Maria23@gmail.com', 2147483647, 0),
+(24, 'ClienteMariana', 'a452c87dd8d13d6d352102b01021d7b6', 'Mariana', 'Filip', '9077598217', 'Mariana24@gmail.com', 2147483647, 0),
+(25, 'ClienteMarilu', 'a452c87dd8d13d6d352102b01021d7b6', 'Marilu', 'Armijjo', '9823756089', 'Marilu25@gmail.com', 2147483647, 0),
+(26, 'ClienteSol', 'e10adc3949ba59abbe56e057f20f883e', 'Sol', 'Perez', '10569913961', 'Sol26@gmail.com', 2147483647, 0),
+(27, 'ClienteSandra', 'c4ca4238a0b923820dcc509a6f75849b', 'Sandra', 'rait', '11316071833', 'Sandra27@gmail.com', 2147483647, 0),
+(28, 'ClienteYahir', '827ccb0eea8a706c4c34a16891f84e7b', 'Yahir', 'Portella', '12062229706', 'Yahir28@gmail.com', 2147483647, 0),
+(29, 'ClienteAlexa', 'a452c87dd8d13d6d352102b01021d7b6', 'Alexa', 'Miranda', '12808387578', 'Alexa29@gmail.com', 2147483647, 0),
+(30, 'ClienteAndres', 'a452c87dd8d13d6d352102b01021d7b6', 'Andres', 'Nandes', '13554545450', 'Andres30@gmail.com', 2147483647, 0),
+(31, 'GermancitoPapasito', '25d55ad283aa400af464c76d713c07ad', 'German', 'mendez', '1234567890', 'germanchito60@gmail.com', 1000459843, 0);
 
 -- --------------------------------------------------------
 
@@ -107,13 +217,21 @@ CREATE TABLE `comentario` (
 --
 
 INSERT INTO `comentario` (`ComentarioID`, `ClienteID`, `AcarreadorID`, `Contenido`, `Puntaje`) VALUES
-(2, 11, 11, 'buen servicio', 5),
+(2, 11, 33, 'buen servicio', 5),
 (3, 11, 11, 'buen servicio', 5),
 (4, 11, 11, 'regular', 2),
 (5, 13, 11, 'buen servicio', 4),
 (6, 11, 11, 'regular', 3),
 (7, 11, 11, 'buen servicio', 4),
-(8, 11, 11, 'Esta vez si, excelente servicio', 5);
+(8, 11, 11, 'Esta vez si, excelente servicio', 5),
+(14, 11, 11, 'Fantastico\r\n', 5),
+(15, 15, 11, 'Buen servicio', 5),
+(16, 11, 11, 'Algo retrasado por el trafico pero buen servicio', 5),
+(17, 11, 11, 'Good', 5),
+(18, 11, 12, 'Good', 5),
+(19, 11, 11, 'Gracias, buen servicio', 5),
+(25, 31, 342, 'la próxima ves con mas cuidado', 4),
+(26, 11, 342, 'Muy buen tacto', 5);
 
 -- --------------------------------------------------------
 
@@ -144,16 +262,35 @@ CREATE TABLE `envio` (
 --
 
 INSERT INTO `envio` (`EnvioID`, `ClienteID`, `Presupuesto`, `Costo_Final`, `AcarreadorID`, `Peso_Total`, `PuntoInicio`, `PuntoFinal`, `FechaInicio`, `FechaLimite`, `AceptacionCliente`, `AceptacionAcarreador`, `Estado`, `Fechaaceptacion`, `activado`) VALUES
-(46, 11, 50000, 47000, 11, 25, 'Cr 135 n 13', 'CR 12 N5 ', '2020-09-01', '2020-09-05', 'true', 'true', 'Pago', '29-08-2020', 1),
-(47, 11, 23000, 22000, 11, 1, 'qwerty', 'qwety', '2020-09-01', '2020-09-02', 'true', 'true', 'Pago', '31-08-2020', 1),
-(48, 12, 25000, 10000, 11, 12, 'Cll 12 N 15', 'CLL 80 N 42', '2020-09-05', '2020-09-05', 'true', 'true', 'Pago', '01-09-2020', 1),
-(49, 13, 120000, 100000, 11, 36, 'Cll 184 Cr 7 ', 'CLL 34 N 18 22', '2020-09-04', '2020-09-05', 'true', 'true', 'Pago', '03-09-2020', 1),
-(50, 11, 120000, 100000, 11, 13, 'Cr 135 n 13 b1', 'Cr 23 N 134 b12', '2020-09-05', '2020-09-06', 'true', 'true', 'Pago', '04-09-2020', 1),
-(54, 11, 100000, 90000, 11, 1, 'Cr 135 n 13 b1', 'CR 12 N50 ', '2020-09-11', '2020-09-13', 'true', 'true', 'Pago', '10-09-2020', 1),
-(64, 11, 1, 1, 11, 1, '1', '1', '0001-01-01', '0001-01-01', 'true', 'true', 'Pago', '16-09-2020', 1),
-(68, 11, 1000, 9000, 11, 1, '111', '111', '0001-01-01', '0001-01-11', 'true', 'true', 'Realizando', '17-09-2020', 1),
-(70, 11, 19000, 18000, 11, 11, 'CLL 12 N 32 ', 'Cll 5 N 3', '2020-09-24', '2020-09-26', 'true', 'true', 'Espera', '17-09-2020', 1),
-(71, 11, 1, NULL, NULL, 13, '11', '1', '0001-01-01', '0001-01-01', NULL, NULL, NULL, NULL, 0);
+(46, 11, 20000, 47000, 11, 25, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '29-08-2020', 1),
+(47, 11, 20000, 22000, 11, 1, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '31-08-2020', 1),
+(48, 12, 20000, 10000, 11, 12, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '01-09-2020', 1),
+(49, 13, 20000, 100000, 11, 36, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '03-09-2020', 1),
+(50, 11, 20000, 100000, 11, 13, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '04-09-2020', 1),
+(54, 11, 20000, 90000, 11, 1, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '10-09-2020', 1),
+(64, 11, 20000, 1, 11, 1, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '16-09-2020', 1),
+(68, 11, 20000, 9000, 11, 1, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Realizando', '17-09-2020', 1),
+(70, 11, 20000, 18000, 11, 11, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Realizando', '17-09-2020', 1),
+(71, 11, 20000, 19000, 11, 13, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '27-10-2020', 1),
+(80, 15, 20000, 29000, 11, 2, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', 'true', 'true', 'Pago', '08-10-2020', 1),
+(81, 14, 20000, NULL, NULL, 1, 'CLL 322 N 15', 'CLL 225 N 45', '2020-10-31', '2020-10-31', NULL, NULL, NULL, NULL, 0),
+(86, 31, 200000, 200000, 342, 4, 'CLL 12 N 32 ', 'CLL 225 N 45', '2020-11-05', '2020-11-06', 'true', 'true', 'Pago', '28-10-2020', 1),
+(87, 11, 300000, NULL, NULL, NULL, 'CLL 42 N 85', 'CLL 405 N 32', '2020-11-06', '2020-11-07', NULL, NULL, NULL, NULL, 0),
+(88, 11, 300000, 280000, 342, 7, 'CLL 42 N 85', 'CLL 405 N 32', '2020-11-06', '2020-11-07', 'true', 'true', 'Pago', '29-10-2020', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `listsubastas`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `listsubastas` (
+`SubastaID` int(11)
+,`EnvioID` int(11)
+,`Fehainicio` varchar(22)
+,`FehaFin` varchar(22)
+,`finalizada` int(11)
+);
 
 -- --------------------------------------------------------
 
@@ -201,7 +338,12 @@ INSERT INTO `objeto` (`ObjetoID`, `EnvioID`, `Nombre`, `Peso`, `Tam`, `descripci
 (37, 64, '1', 1, 1, '11'),
 (42, 68, '11', 1, 1, '111'),
 (44, 70, 'Computador', 11, 11, '1111'),
-(45, 71, '12', 13, 12, '21212');
+(45, 71, '12', 13, 12, '212122'),
+(48, 80, 'Sueter', 1, 3, 'Es un regalo tejido a mano'),
+(49, 80, 'Caja de chocolates', 1, 2, 'No comer porfavor'),
+(50, 81, 'Brayhan', 1, 2, 'Tenga mucho cuidado'),
+(57, 86, 'Estante', 4, 2, 'Estante para libros'),
+(58, 88, 'Cama (desarmada)', 7, 4, 'Una cama grande desarmada');
 
 -- --------------------------------------------------------
 
@@ -216,6 +358,16 @@ CREATE TABLE `puja` (
   `Valor` int(11) NOT NULL,
   `FechaRealizacion` varchar(22) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `puja`
+--
+
+INSERT INTO `puja` (`PujaID`, `SubastaID`, `AcarreadorID`, `Valor`, `FechaRealizacion`) VALUES
+(30, 47, 11, 19000, '2020-10-08'),
+(31, 50, 11, 19000, '2020-10-27'),
+(32, 57, 342, 200000, '2020-10-28'),
+(33, 58, 342, 280000, '2020-10-29');
 
 -- --------------------------------------------------------
 
@@ -244,7 +396,14 @@ INSERT INTO `subasta` (`SubastaID`, `EnvioID`, `Fehainicio`, `FehaFin`, `finaliz
 (20, 54, '2020-09-10', '2020-09-10', 1),
 (25, 64, '2020-09-16', '2020-09-16', 1),
 (29, 68, '2020-09-17', '2020-09-17', 1),
-(31, 70, '2020-09-17', '2020-09-17', 1);
+(31, 70, '2020-09-17', '2020-09-17', 1),
+(34, 80, '2020-10-08', '2020-10-08', 1),
+(47, 81, '2020-10-08', '2020-10-14', 1),
+(48, 71, '2020-10-27', '2020-10-27', 1),
+(49, 71, '2020-10-27', '2020-10-27', 1),
+(50, 71, '2020-10-27', '2020-10-27', 1),
+(57, 86, '2020-10-28', '2020-10-28', 1),
+(58, 88, '2020-10-29', '2020-10-29', 1);
 
 -- --------------------------------------------------------
 
@@ -282,8 +441,27 @@ CREATE TABLE `vehiculo` (
 --
 
 INSERT INTO `vehiculo` (`placa`, `AcarreadorID`, `Modelo`, `Marca`, `peso`, `extra_especificaciones`, `Foto`) VALUES
-('ABC 143', 11, '200', 'NISSAN', 5, 'N/A', ''),
-('SSE 13A', 11, '2019', 'Toshiba', 1, 'N/A', '');
+('AAA001', 16, 'r900', 'Scania', 12, 'N/A', ''),
+('AAE003', 342, 'Eurostar', 'Iveco', 13, 'N/A', ''),
+('AAK200', 17, 'r500', 'Scania', 10, 'N/A', ''),
+('ABA040', 20, 'Daily', 'Iveco', 11, 'N/A', ''),
+('AcA050', 19, 'Eurostar', 'Iveco', 13, 'N/A', ''),
+('ADA600', 20, 'Eurotech', 'Iveco', 14, 'N/A', ''),
+('AEA007', 21, 'Powerstar', 'Iveco', 9, 'N/A', ''),
+('AFA800', 22, 'Stralis', 'Iveco', 8, 'N/A', ''),
+('AGA000', 23, 'Trakker', 'Iveco', 10, 'N/A', ''),
+('AHA050', 24, 'D 18', 'Renault Trucks', 12, 'N/A', ''),
+('AIA002', 25, 'xf', 'DAF', 12, 'N/A', ''),
+('AJA400', 26, 'cf', 'DAF', 12, 'N/A', ''),
+('AKA340', 27, 'r900', 'Scania', 11, 'N/A', ''),
+('ALA000', 28, 'r500', 'Scania', 13, 'N/A', ''),
+('AMA560', 29, 'Daily', 'Iveco', 9, 'N/A', ''),
+('ANA300', 30, 'r900', 'Scania', 13, 'N/A', ''),
+('AOA540', 31, 'Powerstar', 'Iveco', 12, 'N/A', ''),
+('APA607', 32, 'r900', 'Scania', 9, 'N/A', ''),
+('AQA202', 33, 'r500', 'Scania', 8, 'N/A', ''),
+('ass 123', 11, '200', 'NISSAN', 12, 'N/A', ''),
+('SSE 13A', 11, '2019', 'Toshiba', 1, 'Carga de 3 ton', '');
 
 -- --------------------------------------------------------
 
@@ -312,6 +490,15 @@ CREATE TABLE `vwpujas` (
 ,`Valor` int(11)
 ,`FechaRealizacion` varchar(22)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `listsubastas`
+--
+DROP TABLE IF EXISTS `listsubastas`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `listsubastas`  AS  select `subasta`.`SubastaID` AS `SubastaID`,`subasta`.`EnvioID` AS `EnvioID`,`subasta`.`Fehainicio` AS `Fehainicio`,`subasta`.`FehaFin` AS `FehaFin`,`subasta`.`finalizada` AS `finalizada` from `subasta` where `subasta`.`finalizada` = 0 order by `subasta`.`SubastaID` desc ;
 
 -- --------------------------------------------------------
 
@@ -348,13 +535,17 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- Indices de la tabla `acarreador`
 --
 ALTER TABLE `acarreador`
-  ADD PRIMARY KEY (`AcarreadorID`);
+  ADD PRIMARY KEY (`AcarreadorID`),
+  ADD UNIQUE KEY `login` (`login`),
+  ADD UNIQUE KEY `correo` (`correo`);
 
 --
 -- Indices de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  ADD PRIMARY KEY (`clienteID`);
+  ADD PRIMARY KEY (`clienteID`),
+  ADD UNIQUE KEY `login` (`login`),
+  ADD UNIQUE KEY `correo` (`correo`);
 
 --
 -- Indices de la tabla `comentario`
@@ -414,49 +605,49 @@ ALTER TABLE `vehiculo`
 -- AUTO_INCREMENT de la tabla `acarreador`
 --
 ALTER TABLE `acarreador`
-  MODIFY `AcarreadorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `AcarreadorID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=343;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `clienteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `clienteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `comentario`
 --
 ALTER TABLE `comentario`
-  MODIFY `ComentarioID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ComentarioID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `envio`
 --
 ALTER TABLE `envio`
-  MODIFY `EnvioID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `EnvioID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de la tabla `notificacion`
 --
 ALTER TABLE `notificacion`
-  MODIFY `notificacionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `notificacionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT de la tabla `objeto`
 --
 ALTER TABLE `objeto`
-  MODIFY `ObjetoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `ObjetoID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `puja`
 --
 ALTER TABLE `puja`
-  MODIFY `PujaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `PujaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT de la tabla `subasta`
 --
 ALTER TABLE `subasta`
-  MODIFY `SubastaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `SubastaID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- Restricciones para tablas volcadas
@@ -474,12 +665,6 @@ ALTER TABLE `comentario`
 --
 ALTER TABLE `envio`
   ADD CONSTRAINT `envio_ibfk_1` FOREIGN KEY (`ClienteID`) REFERENCES `cliente` (`clienteID`);
-
---
--- Filtros para la tabla `notificacion`
---
-ALTER TABLE `notificacion`
-  ADD CONSTRAINT `notificacion_ibfk_1` FOREIGN KEY (`usuarioID`) REFERENCES `acarreador` (`AcarreadorID`);
 
 --
 -- Filtros para la tabla `objeto`

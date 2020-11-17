@@ -55,7 +55,7 @@ public class ComentarioDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Registrar() {
        try {
-                sql = "INSERT INTO `comentario`(`ClienteID`, `AcarreadorID`, `Contenido`, `Puntaje`) VALUES  (?,?,?,?)";
+                sql = "CALL ComentarioRegistrar(?,?,?,?);";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,ClienteID);
                 puente.setString(2,AcarreadorID);
@@ -65,7 +65,7 @@ public class ComentarioDAO extends Conexion implements MetodosCrud{
                 operacion = true;
             
         } catch (SQLException e) {
-            Logger.getLogger(VehiculoDAO.class.getName()).log(Level.SEVERE,null,e);
+            Logger.getLogger(ComentarioDAO.class.getName()).log(Level.SEVERE,null,e);
             operacion = false;
         }
         
@@ -86,7 +86,7 @@ public class ComentarioDAO extends Conexion implements MetodosCrud{
          ArrayList<ComentarioVO> Listado = new ArrayList<ComentarioVO>();
         
         try {
-            sql = "select * from comentario where AcarreadorID = ?";
+            sql = "call ComentarioList(?)";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, AcarreadorID);
             rs = puente.executeQuery();
@@ -105,7 +105,7 @@ public class ComentarioDAO extends Conexion implements MetodosCrud{
         
         String Promed = "";
         try {
-            sql = "SELECT AVG(Puntaje) FROM `comentario` WHERE AcarreadorID = ?";
+            sql = "call ComentarioDeterminarPromedio(?)";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, UsID);
             rs = puente.executeQuery();
@@ -113,10 +113,10 @@ public class ComentarioDAO extends Conexion implements MetodosCrud{
                 Promed = rs.getString(1);
             }
             
-            String sql1 = "UPDATE `acarreador` SET puntaje_promedio=? WHERE AcarreadorID = ?";
+            String sql1 = "call ComentarioActualizarPromedio(?,?)";
             puente = conexion.prepareStatement(sql1);
-            puente.setString(1, Promed);
-            puente.setString(2, UsID);
+            puente.setString(1,UsID);
+            puente.setString(2,Promed);
             puente.executeUpdate();
             
         } catch (Exception e) {

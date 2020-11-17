@@ -73,7 +73,7 @@
       <script src="vendor/OwlCarousel/owl.carousel.js"></script>
       <script src="vendor/semantic/semantic.min.js"></script>
       <script src="js/night-mode.js"></script>
-      
+      <script src="js/custom.js"></script>
       <script src="js/validacion/envio.js"></script>
     </body>
 </html>

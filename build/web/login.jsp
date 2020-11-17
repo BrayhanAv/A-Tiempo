@@ -49,7 +49,7 @@
 
                 <input class="input-text tool" id="Telefono" name="Telefono" placeholder="Telefono" type="text"/>
 
-                <input class="input-text tool" id="Corre" name="Corre" placeholder="Correo" type="email"/>
+                <input class="input-text tool" id="Corre" name="Corre" placeholder="Correo" type="Email"/>
 
                 <input class="input-text tool" id="Documento" name="Documento" placeholder="Documento" type="text"/>
 
@@ -75,6 +75,7 @@
               <input class="input-text" name="Login" placeholder="Nombre de usuario" type="text"/>
               <input class="input-text" name="password" placeholder="Contraseña" type="password"/>
               <input type="hidden" name="opcion" value="2">
+              <a href="updatePassword.jsp">¿Olvidaste tu contraseña?</a>
               <input class="input-submit" type="submit" value="Ingresar"/>
             </form>
           </fieldset>

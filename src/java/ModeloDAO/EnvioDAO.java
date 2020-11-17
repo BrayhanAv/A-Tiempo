@@ -71,7 +71,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Registrar() {
          try {
-                sql = "INSERT INTO `envio`(ClienteID ,`presupuesto`, `PuntoInicio`, `PuntoFinal`, `FechaInicio`, `FechaLimite`, activado) VALUES  (?,?,?,?,?,?,0)";
+                sql = "call EnvioRegistrar(?,?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,ClienteID);
                 puente.setString(2,Presupuesto);
@@ -93,7 +93,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Actualizar() {
         try {
-                sql = "UPDATE `Envio` SET `Presupuesto`=?,`PuntoInicio`=?,`PuntoFinal`=?,`FechaInicio`=?,`FechaLimite`=? WHERE `EnvioID`=?";
+                sql = "call EnvioModificar(?,?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,Presupuesto);
                 puente.setString(2,PuntoIn);
@@ -126,6 +126,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
                 
                 objDAO.EliminarxEnvio(EnvioID);
                 
+                conexion = this.obtenerConeccion();
                 sql = "DELETE FROM `envio` WHERE EnvioID = ?";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,EnvioID);
@@ -145,7 +146,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
         EnvioVO EnVO = null;
         
         try {
-            sql = "SELECT * FROM `Envio` WHERE EnvioID = ?";
+            sql = "call EnvioSearch(?)";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, ID);
             rs = puente.executeQuery();
@@ -163,7 +164,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
         
         String id = "";
         try {
-                sql = "select EnvioID from envio where ClienteID = ? and Presupuesto = ? and PuntoInicio = ? and PuntoFinal = ? and FechaInicio = ? and FechaLimite = ?";
+                sql = "call EnvioDeterminarID(?,?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,ClienteID);
                 puente.setString(2,Presupuesto);
@@ -196,7 +197,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
             
          ArrayList<EnvioVO> Listado = new ArrayList<EnvioVO>();
         try {
-            sql = "SELECT * FROM `envio` where ClienteID = ? and activado = 0 ORDER BY `EnvioID` DESC";
+            sql = "call EnvioList( ? )";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, UsuarioID);
             rs = puente.executeQuery();
@@ -215,7 +216,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
             
          ArrayList<EnvioVO> Listado = new ArrayList<EnvioVO>();
         try {
-            sql = "SELECT * FROM `envio` where ClienteID = ? and activado = 1 ORDER BY `EnvioID` DESC";
+            sql = "call EnvioListContrato( ? )";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, UsuarioID);
             rs = puente.executeQuery();
@@ -234,7 +235,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
             
          ArrayList<EnvioVO> Listado = new ArrayList<EnvioVO>();
         try {
-            sql = "SELECT * FROM `envio` where AcarreadorID = ? and activado = 1 ORDER BY `EnvioID` DESC";
+            sql = "call EnvioListContratoAcarreador(?)";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, AcarreadorID);
             rs = puente.executeQuery();
@@ -252,7 +253,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
     public boolean CambiarEstado(String Estado, String EnvioIDx){
         
         try {
-                sql = "UPDATE `envio` SET Estado = ? WHERE EnvioID = ?";
+                sql = "call EnvioCambiarEstado(?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1, Estado);
                 puente.setString(2, EnvioIDx);
@@ -269,7 +270,7 @@ public class EnvioDAO extends Conexion implements MetodosCrud{
     public boolean AceptarContrato(String EnvioID,String AcarreadorID){
         
         try {
-                sql = "UPDATE `envio` SET `Costo_Final`=?,`AcarreadorID`=?,`AceptacionCliente`=?,`AceptacionAcarreador`=?,`Fechaaceptacion`=?,`activado`= 1,Estado = 'Espera' WHERE EnvioID = ?";
+                sql = "call EnvioAceptarContrato(?,?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 pujaVO pjvo = new pujaVO();
                 pujaDAO pjDAO = new pujaDAO(pjvo);

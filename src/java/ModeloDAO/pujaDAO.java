@@ -56,7 +56,7 @@ public class pujaDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Registrar() {
         try {
-                sql = "INSERT INTO `puja`(`PujaID`, `SubastaID`, `AcarreadorID`, `Valor`, `FechaRealizacion`) VALUES (?,?,?,?,?)";
+                sql = "CALL PujaRegistrar(?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,PujaID);
                 puente.setString(2,SubastaID);
@@ -148,7 +148,7 @@ public class pujaDAO extends Conexion implements MetodosCrud{
                 puente = conexion.prepareStatement(sql);
                 SubastaVO subvo = new SubastaVO();
                 SubastaDAO subdao = new SubastaDAO(subvo);
-                puente.setString(1, subdao.searchid(EnvioID));
+                puente.setString(1, subdao.searchidEnvio(EnvioID));
                 puente.setString(2, AcarreadorID);
                 rs = puente.executeQuery();
             while(rs.next()){

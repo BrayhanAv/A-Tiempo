@@ -66,6 +66,8 @@ if(request.getParameter("UsuID") != null){
                                                                                             %>
 											</p>
                                                                                 </div>
+                                                                                        
+                                                                                
 									</div>												
 								</div>
 								<div class="col-lg-7">
@@ -90,14 +92,18 @@ if(request.getParameter("UsuID") != null){
                                                                                 while(Iter.hasNext()){
                                                                                     
                                                                                     ComentarioVO com = Iter.next();
+                                                                                    
+                                                                                    UsuarioVO USUVO = new UsuarioVO();
+                                                                                    UsuarioDAO USUDAO = new UsuarioDAO(USUVO);
+                                                                                    USUVO = USUDAO.searchCliente(com.getClienteID());
                                                                             %>
                                                                             
 										<div class="review_item" style="margin-bottom: 30px;">
 											<div class="review_usr_dt">
 												<img src="images/left-imgs/img-1.jpg" alt="">
 												<div class="rv1458">
-													<h4 class="tutor_name1">Usuario ID(<%= com.getClienteID() %>)</h4>
-                                                                                                        <span class="time_145">Comentario id:<%= com.getComentarioID()%></span>
+													<h4 class="tutor_name1"><%= USUVO.getLogin() %> </h4>
+                                                                                                        <span class="time_145">Codigo de comentario:<%= com.getComentarioID()%></span>
 												</div>
 											</div>
 											<div class="rating-box mt-20">

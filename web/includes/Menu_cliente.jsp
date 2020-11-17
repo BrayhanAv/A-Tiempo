@@ -66,9 +66,10 @@
                         </div>							
                       </div>						
                     </div>
+                        <a href="updatePerfilCliente.jsp?UsuID=<%= id %>" class="item channel_item">Modificar datos</a>
                     <div class="night_mode_switch__btn">
-                    </div>
-                    <a href="" class="item channel_item">Ayuda</a>
+                    </div>   
+                    
                     <a href="logaut.jsp" class="item channel_item">Salir</a>						
                   </div>
                 </li>

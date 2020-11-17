@@ -52,7 +52,7 @@ public class VehiculoDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Registrar() {
         try {
-                sql = "INSERT INTO `vehiculo`(`placa`, `AcarreadorID`, `Modelo`, `Marca`, `peso`, `extra_especificaciones`, `Foto`) VALUES  (?,?,?,?,?,?,?)";
+                sql = "call VehiculoRegistrar(?,?,?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,Placa);
                 puente.setString(2,AcarreadorID);
@@ -81,7 +81,7 @@ public class VehiculoDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Actualizar() {
         try {
-                sql = "UPDATE `vehiculo` SET `Modelo`=?,`Marca`=?,`peso`=?,`extra_especificaciones`=?,`Foto`=? WHERE `placa`=?";
+                sql = "CALL VehiculoModificar(?,?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,Modelo);
                 puente.setString(2,Marca);

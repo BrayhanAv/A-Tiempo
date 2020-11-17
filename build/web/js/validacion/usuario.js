@@ -52,6 +52,16 @@ function validacion() {
         document.getElementById("Telefono").style.borderBottom = "3px solid rgba(0,225,0,.6)"; 
     }
     
+    //validar correo
+    var Valor = document.getElementById("Corre").value;
+    
+    if( !(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.([a-zA-Z]{2,4})+$/.test(Valor))){
+        document.getElementById("Corre").style.borderBottom = "3px solid rgba(225,0,0,.6)"; 
+        return false;
+    }else{
+        document.getElementById("Corre").style.borderBottom = "3px solid rgba(0,225,0,.6)"; 
+    }
+    
     //validar Documento
     var Valor = document.getElementById("Documento").value;
 
@@ -74,7 +84,9 @@ function validacion() {
         document.getElementById("Tabla").style.borderBottom = "3px solid rgba(0,225,0,.6)"; 
     }
 
+
     return true;
+    
 
 }
 //

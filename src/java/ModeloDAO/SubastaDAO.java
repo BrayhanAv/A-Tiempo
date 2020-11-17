@@ -48,12 +48,11 @@ public class SubastaDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Registrar() {
         try {
-                sql = "INSERT INTO `subasta`(subastaID,`EnvioID`, Fehainicio, FehaFin,Finalizada) VALUES  (?,?,?,?,0)";
+                sql = "call SubastaRegistrar(?,?,?)";
                 puente = conexion.prepareStatement(sql);
-                puente.setString(1,SubastaID);
-                puente.setString(2,EnvioID);
-                puente.setString(3,FechaIn);
-                puente.setString(4,FechaFin);
+                puente.setString(1,EnvioID);
+                puente.setString(2,FechaIn);
+                puente.setString(3,FechaFin);
                 puente.executeUpdate();
                 operacion = true;
             
@@ -92,7 +91,7 @@ public class SubastaDAO extends Conexion implements MetodosCrud{
         ArrayList<SubastaVO> Listado = new ArrayList<SubastaVO>();
         
         try {
-                sql = "SELECT * FROM subastasporcliente WHERE clienteID = ? and finalizada = 0 ORDER BY `subastaid` DESC";
+                sql = "call SubastaList( ? )";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1, usuarioID);
                 rs = puente.executeQuery();
@@ -112,7 +111,7 @@ public class SubastaDAO extends Conexion implements MetodosCrud{
         ArrayList<SubastaVO> Listado = new ArrayList<SubastaVO>();
         
         try {
-                sql = "SELECT * FROM `subasta` WHERE finalizada = 0 ORDER BY `subastaid` DESC";
+                sql = "SELECT * FROM `listsubastas`";
                 puente = conexion.prepareStatement(sql);
                 rs = puente.executeQuery();
             while(rs.next()){
@@ -178,16 +177,20 @@ public class SubastaDAO extends Conexion implements MetodosCrud{
     
     public boolean finalizar(String id){
         try {
+                
                 PreparedStatement puente2 = null;
                 sql = "UPDATE `subasta` SET `finalizada`= 1 WHERE subastaID = ?";
                 puente2 = conexion.prepareStatement(sql);
                 puente2.setString(1, id);
                 puente2.executeUpdate();
-
+            
                 pujaVO pjvo = new pujaVO();
                 pujaDAO pjdao = new pujaDAO(pjvo);
-                
+            
                 String Usuario = pjdao.determinarGanador(id);
+                
+                if(!Usuario.equals("")){
+                
                 String Remitente = "Sistema";
                 String Accion = "Contrato";
                 String Link = id;
@@ -198,6 +201,11 @@ public class SubastaDAO extends Conexion implements MetodosCrud{
                 
                 operacion = true;
                 
+                }else{
+                    operacion = false;
+                }
+                
+                
         } catch (SQLException e) {
             Logger.getLogger(SubastaDAO.class.getName()).log(Level.SEVERE,null,e);
             operacion = false;
@@ -207,6 +215,24 @@ public class SubastaDAO extends Conexion implements MetodosCrud{
     }
     
     public String searchid(String EnvioID){
+        String id = "";
+        
+         try {
+                sql = "SELECT SubastaID from subasta where envioID = ? and finalizada = 0";
+                puente = conexion.prepareStatement(sql);
+                puente.setString(1, EnvioID);
+                rs = puente.executeQuery();
+            while(rs.next()){
+               id = rs.getString(1);
+            }
+        } catch (Exception e) {
+              Logger.getLogger(SubastaDAO.class.getName()).log(Level.SEVERE,null,e);
+        }
+        
+        return id;
+    }
+    
+    public String searchidEnvio(String EnvioID){
         String id = "";
         
          try {

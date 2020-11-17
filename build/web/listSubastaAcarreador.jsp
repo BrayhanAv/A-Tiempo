@@ -4,6 +4,8 @@
     Author     : Brayhan
 --%>
 
+<%@page import="ModeloDAO.VehiculoDAO"%>
+<%@page import="ModeloVO.VehiculoVO"%>
 <%@page import="ModeloDAO.SubastaDAO"%>
 <%@page import="ModeloVO.SubastaVO"%>
 <%@page import="java.util.Iterator"%>
@@ -29,16 +31,26 @@
                                                                     ArrayList<SubastaVO> Listado = new ArrayList<SubastaVO>();
                                                                     SubastaVO subVO = new SubastaVO();
                                                                     SubastaDAO subDAO = new SubastaDAO(subVO);
+                                                                 
+                                                                    ArrayList<VehiculoVO> Listado2 = new ArrayList<VehiculoVO>();
+                                                                    VehiculoVO VhVO = new VehiculoVO();
+                                                                    VehiculoDAO VhDAO = new VehiculoDAO(VhVO);
 
-                                                                    if(subDAO.listAcarreador()!= null){
-                                                                            Listado = subDAO.listAcarreador();
-                                                                            Iterator<SubastaVO> Iter = Listado.iterator();
-                                                                            while(Iter.hasNext()){                        
-                                                                                    SubastaVO sub = Iter.next();
-                                                                                    EnvioVO  EnVO = new EnvioVO();
-                                                                                    EnvioDAO EnDAO = new EnvioDAO(EnVO); 
+                                                                    if(VhDAO.list(id)!= null){
+                                                                       Listado2 = VhDAO.list(id);
+                                                                       Iterator<VehiculoVO> Iter2 = Listado2.iterator();
 
-                                                                                    EnvioVO EnVO2 = EnDAO.search(sub.getEnvioID());
+                                                                       if(Iter2.hasNext()){
+                                                                           System.out.println("Tienes carritos");
+                                                                                if(subDAO.listAcarreador()!= null){
+                                                                                        Listado = subDAO.listAcarreador();
+                                                                                        Iterator<SubastaVO> Iter = Listado.iterator();
+                                                                                        while(Iter.hasNext()){                        
+                                                                                                SubastaVO sub = Iter.next();
+                                                                                                EnvioVO  EnVO = new EnvioVO();
+                                                                                                EnvioDAO EnDAO = new EnvioDAO(EnVO); 
+
+                                                                                                EnvioVO EnVO2 = EnDAO.search(sub.getEnvioID());
                                                             %>
 
 								<div class="col-lg-5 col-md-4">
@@ -71,7 +83,13 @@
 									<%            
 											}
 										}
-									%>
+                                                                            }else{
+                                                                        %>
+                                                                        <h5 class="mhs_title" style="font-size: 15px;">No tienes vehiculos para poder participar</h5>
+                                                                        <%
+                                                                       }
+                                                                    }
+                                                                %>
 							</div>
                                 
                             </div>

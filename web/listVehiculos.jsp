@@ -25,13 +25,20 @@
                                                                         <h5 class="mhs_title" style="font-size: 15px;">Manten tus vehiculos en buen estado</h5>
                                                                         
 									<%
-                                                                             ArrayList<VehiculoVO> Listado = new ArrayList<VehiculoVO>();
+                                                                            ArrayList<VehiculoVO> Listado = new ArrayList<VehiculoVO>();
                                                                             VehiculoVO VhVO = new VehiculoVO();
                                                                             VehiculoDAO VhDAO = new VehiculoDAO(VhVO);
-
+                                                                            
                                                                             if(VhDAO.list(id)!= null){
                                                                                Listado = VhDAO.list(id);
                                                                                Iterator<VehiculoVO> Iter = Listado.iterator();
+                                                                               
+                                                                               if(Iter.hasNext()){
+                                                                                   System.out.println("Tienes carritos");
+                                                                               }else{
+                                                                                   System.out.println("No Tienes carritos");
+                                                                               }
+                                                                               
                                                                                while(Iter.hasNext()){                        
                                                                                    VehiculoVO veh = Iter.next();
                                                                         %>

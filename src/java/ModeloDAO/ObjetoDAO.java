@@ -55,7 +55,7 @@ public class ObjetoDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Registrar() {
         try {
-                sql = "INSERT INTO `objeto`(`EnvioID`, `Nombre`, `Peso`, `Tam`, `Descripcion`) VALUES  (?,?,?,?,?)";
+                sql = "call ObjetoRegistrar(?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,EnvioID);
                 puente.setString(2,Nombre);
@@ -76,7 +76,7 @@ public class ObjetoDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Actualizar() {
         try {
-                sql = "UPDATE `objeto` SET `Nombre`=?,`Peso`=?,`Tam`=?,`descripcion`=? WHERE `ObjetoID`=?";
+                sql = "call ObjetoModificar(?,?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,Nombre);
                 puente.setString(2,Peso);
@@ -106,12 +106,6 @@ public class ObjetoDAO extends Conexion implements MetodosCrud{
         } catch (SQLException e) {
             Logger.getLogger(ObjetoDAO.class.getName()).log(Level.SEVERE,null,e);
             operacion = false;
-        }finally{
-            try {
-                this.cerrarConeccion();
-            } catch (SQLException e) {
-                Logger.getLogger(ObjetoDAO.class.getName()).log(Level.SEVERE,null,e);
-            }
         }
         
        return operacion;
@@ -129,6 +123,7 @@ public class ObjetoDAO extends Conexion implements MetodosCrud{
             Logger.getLogger(ObjetoDAO.class.getName()).log(Level.SEVERE,null,e);
             operacion = false;
         }
+        
        return operacion;
     }
 
@@ -136,7 +131,7 @@ public class ObjetoDAO extends Conexion implements MetodosCrud{
          ArrayList<ObjetoVO> Listado = new ArrayList<ObjetoVO>();
         
         try {
-            sql = "select * from objeto where EnvioID = ?";
+            sql = "Call ObjetoList(?)";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, EnvioID);
             rs = puente.executeQuery();
@@ -180,7 +175,7 @@ public class ObjetoDAO extends Conexion implements MetodosCrud{
         ObjetoVO ObVO = null;
         
         try {
-            sql = "SELECT * FROM `objeto` WHERE ObjetoID = ?";
+            sql = "call ObjetoSearch(?)";
             puente = conexion.prepareStatement(sql);
             puente.setString(1, ObjetoID);
             rs = puente.executeQuery();

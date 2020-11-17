@@ -86,11 +86,12 @@
                             <span><%= Rol %> (<%= id %>) </span>
                             </div>							
                         </div>
-                        <a href="viewPerfil.jsp?UsuID=<%= id %>" class="dp_link_12">Ver perfil</a>						
+                            <a href="viewPerfil.jsp?UsuID=<%= id %>" class="dp_link_12">Ver perfil</a>
                         </div>
+                        
                         <div class="night_mode_switch__btn">
                         </div>
-                        <a href="" class="item channel_item">Ayuda</a>
+                         <a href="updatePerfil.jsp?USID=<%= id %>" class="item channel_item"> Editar perfíl</a>
                         <a href="logaut.jsp" class="item channel_item">Salir</a>						
                     </div>
                     </li>

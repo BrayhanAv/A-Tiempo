@@ -8,12 +8,16 @@ package Controlador;
 import ModeloDAO.UsuarioDAO;
 import ModeloVO.UsuarioVO;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -32,12 +36,12 @@ public class UsuarioControlador extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, MessagingException {
         response.setContentType("text/html;charset=UTF-8");
         
         String UsuarioID=request.getParameter("UsuarioID"), 
-               Login=request.getParameter("Login"), 
-               Password=request.getParameter("password"), 
+               Login=request.getParameter("Login"),
+               Password = null,
                Nombre=request.getParameter("Nombre"), 
                Apellido=request.getParameter("Apellido"),
                Telefono=request.getParameter("Telefono"),
@@ -45,6 +49,9 @@ public class UsuarioControlador extends HttpServlet {
                Documento=request.getParameter("Documento"),
                Descontinuado=request.getParameter("Desc"),
                Tabla=request.getParameter("Tabla");
+                if(request.getParameter("password") != null){
+                    Password=DigestUtils.md5Hex(request.getParameter("password"));
+                }
                    
         int opcion =  Integer.parseInt(request.getParameter("opcion"));
         
@@ -56,21 +63,24 @@ public class UsuarioControlador extends HttpServlet {
                 if(UsDAO.Registrar()){
                     request.setAttribute("MensageExito", "El Usuario se registro correctamente");
                 }else{
-                    request.setAttribute("MensageError", "El login ya esta registrado");
+                    request.setAttribute("MensageError", "El login o el correo ya esta registrado");
                 }
                 
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 
             break;
-                
+                    
+            
             case 2://Iniciar session
                 
                 UsuarioVO ses = UsDAO.login(Login, Password);
                 
                 if(ses != null){
                     
-                    if(ses.getDescontinuado().equals("1")){
-                        request.setAttribute("MensageError", "La cuenta fue desactivada");
+                    String desc = ses.getDescontinuado();
+                    
+                    if(desc == null || desc.equals("1") ){
+                        request.setAttribute("MensageError", "La cuenta fue desactivada o la cuenta esta corrompida");
                         request.getRequestDispatcher("login.jsp").forward(request, response);
                     }else{  
                         HttpSession SUsuario = request.getSession(); //crea una session
@@ -82,9 +92,57 @@ public class UsuarioControlador extends HttpServlet {
                     request.setAttribute("MensageError", "El Login o la contraseña son incorrectos");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
-
+                
+                
             break;
                 
+                
+            case 3:
+                if(UsDAO.Actualizar()){
+                    request.setAttribute("MensageExito", "El Usuario se Modifico correctamente");
+                    if(Tabla.equals("acarreador")){
+                        request.getRequestDispatcher("viewPerfil.jsp?UsuID="+UsuarioID).forward(request, response);
+                    }else{
+                        request.getRequestDispatcher("MenuUsuario.jsp?UsuID="+UsuarioID).forward(request, response);
+                    }
+                    
+                }else{
+                    request.setAttribute("MensageError", "El Usuario NO se modifico correctamente");
+                    
+                    if(Tabla.equals("acarreador")){
+                        request.getRequestDispatcher("updatePerfil.jsp?USID="+UsuarioID).forward(request, response);
+                    }else{
+                        request.getRequestDispatcher("updatePerfilCliente.jsp?UsuID="+UsuarioID).forward(request, response);
+                    }
+                }
+                
+                
+            break;
+            
+            case 4:
+                if(UsDAO.enviarCorreo(Correo, Login)){
+                    request.setAttribute("MensageExito", "Revise su correo para proceder");
+                    
+                    request.getRequestDispatcher("updatePassword.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("MensageError", "Algo salio mal revise la configuracion de su correo");
+                    request.getRequestDispatcher("updatePassword.jsp").forward(request, response);
+                }
+                
+            break;
+                
+            case 5:
+                if(UsDAO.CambiarPassword()){
+                    request.setAttribute("MensageExito", "Contraseña Actualizada");
+                    
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }else{
+                    request.setAttribute("MensageError", "Algo salio mal");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                }
+                
+            break;
+            
         }
         
     }
@@ -101,7 +159,11 @@ public class UsuarioControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (MessagingException ex) {
+            Logger.getLogger(UsuarioControlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -115,7 +177,11 @@ public class UsuarioControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (MessagingException ex) {
+            Logger.getLogger(UsuarioControlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

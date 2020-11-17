@@ -54,7 +54,7 @@ public class NotificacionDAO extends Conexion implements MetodosCrud{
     @Override
     public boolean Registrar() {
         try {
-                sql = "INSERT INTO `notificacion`(`usuarioID`, `remitente`, `accion`, `vinculo`)  VALUES (?,?,?,?)";
+                sql = "call NotificacionRegistrar(?,?,?,?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1,usuarioID);
                 puente.setString(2,remitente);
@@ -99,7 +99,7 @@ public class NotificacionDAO extends Conexion implements MetodosCrud{
         ArrayList<NotificacionVO> listado = new ArrayList<NotificacionVO>();
         
             try {
-                sql = "SELECT * FROM `notificacion` WHERE usuarioID = ?";
+                sql = "call NotificacionList(?)";
                 puente = conexion.prepareStatement(sql);
                 puente.setString(1, id);
             rs = puente.executeQuery();

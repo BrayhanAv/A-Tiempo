@@ -42,13 +42,22 @@ function Validar(){
     console.log(res);
     var f = new Date();
     
-    if(!(res[0] ==  f.getFullYear()) || (res[1] < (f.getMonth() + 1)) || res[2] < f.getDate()  ){
+    if(!(res[0] ==  f.getFullYear())){
         document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
-        
+        return false;
+    }else if((res[1] < (f.getMonth() + 1))){
+        document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
+        console.log("el mes es menor");
+        return false;
+    }else if(res[1] == (f.getMonth() + 1) && res[2] < f.getDate()){
+        document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
+        console.log("el mes es el mismo y el dia no es");
         return false;
     }else{
         document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(0,225,0,.7)"; 
+        console.log("el mes es mayor y esta bien");
     }
+   
     
     //validar fechaf
     var Valor = document.getElementById("fechaf").value;
@@ -58,12 +67,20 @@ function Validar(){
     console.log(res);
     var f = new Date();
 
-    if(!(res[0] ==  f.getFullYear()) || (res[1] < (f.getMonth() + 1)) || res[2] < f.getDate()  ){
-        document.getElementById("fechaf"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
-        
+    if(!(res[0] ==  f.getFullYear())){
+        document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
+        return false;
+    }else if((res[1] < (f.getMonth() + 1))){
+        document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
+        console.log("el mes es menor");
+        return false;
+    }else if(res[1] == (f.getMonth() + 1) && res[2] < f.getDate()){
+        document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(225,0,0,.7)"; 
+        console.log("el mes es el mismo y el dia no es");
         return false;
     }else{
-        document.getElementById("fechaf"+"s").style.borderBottom = "4px solid rgba(0,225,0,.7)"; 
+        document.getElementById("fecha"+"s").style.borderBottom = "4px solid rgba(0,225,0,.7)"; 
+        console.log("el mes es mayor y esta bien");
     }
     
     return true;

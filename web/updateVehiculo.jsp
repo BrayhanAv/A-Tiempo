@@ -13,7 +13,7 @@
 
                         <form class="contact100-form validate-form" action="Vehiculo" method="POST">
                             <span class="contact100-form-title">
-                                Actualizar datso del vehiculo
+                                Actualizar datos del vehiculo
                             </span>
                             <div style="color: red">
                               <%if(request.getAttribute("MensageError") != null){%>
@@ -71,9 +71,9 @@
 
                             <input type="hidden" name="IdAcarr" value="<%= id %>">
 
-                            <input type="hidden" name="opcion" value="1">
+                            <input type="hidden" name="opcion" value="2">
 
-                            <input type="submit" value="Registrar" class="upload_btn" style="width: 25%;">
+                            <input type="submit" value="Modificar" class="upload_btn" style="width: 25%;">
 
                         </form>
 
