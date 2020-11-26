@@ -5,7 +5,7 @@ function Validar(){
     
     var Valor = document.getElementById("Valor").value;
     
-    if(Valor > Presupuesto || Valor < 0){
+    if(Valor > Presupuesto || Valor < 0 || Valor > 100){
         return false;
     }
 

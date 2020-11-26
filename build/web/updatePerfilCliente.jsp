@@ -55,7 +55,7 @@
 
                             <div class="wrap-input100 validate-input"> <!-- INPUT entero -->
                                 <span class="label-input100">Correo</span>
-                                <input class="input100" type="email" id="Corre" name="Corre" value="<%= usVo.getCorreo() %>"  required="">
+                                <input readonly="readonly" class="input100" type="email" id="Corre" name="Corre" value="<%= usVo.getCorreo() %>"  required="">
                                 <span class="focus-input100"></span>
                             </div>
 

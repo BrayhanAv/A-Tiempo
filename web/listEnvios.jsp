@@ -95,7 +95,11 @@
                                                                                                                 
                                                                                                             <a href="updateEnvio.jsp?EnID=<%= veh.getEnvioID()%>" style="text-align: center;"> <span>Editar</span> </a>
 													
+                                                                                                            <% if(veh.getPesoTotal() == null || veh.getPesoTotal().equals("0")){ %>                                                                                                            
+                                                                                                            <a style="text-align: center;"> <span>Sin Objetos</span> </a>
+                                                                                                        <% }else{ %>
                                                                                                             <a href="newSubasta.jsp?EnID=<%= veh.getEnvioID()%>" style="text-align: center;"> <span>Subastar</span> </a>
+                                                                                                        <% } %>
                                                                                                     <% } %>
 												</div>																											
 											</div>

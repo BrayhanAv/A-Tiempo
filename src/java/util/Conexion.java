@@ -21,7 +21,6 @@ public class Conexion {
     public Conexion(){
         
         driver = "com.mysql.jdbc.Driver";
-        //bd = "ssebv2";
         bd = "ssebv2_prueba";
         usuario = "root";
         password = "";

@@ -33,6 +33,10 @@ if(request.getParameter("SubID") != null){
                         EnvioDAO EnvioDAO = new EnvioDAO(EnvioVO);
                         EnvioVO EnVO = EnvioDAO.search(SubastaID);
                         
+                        if((subastDAO.searchid(EnVO.getEnvioID())).equals("")){
+                            request.getRequestDispatcher("listSubastaAcarreador.jsp").forward(request, response);
+                        }
+                        
                         %>
                       <ul class="country_list">
                         <li>
